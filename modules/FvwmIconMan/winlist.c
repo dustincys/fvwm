@@ -162,8 +162,13 @@ int check_resolution(WinManager *manager, WinData *win)
     reverse = 1;
     /* fall through to next case */
   case SHOW_DESKTOP:
-    if (IS_STICKY_ACROSS_PAGES(win) || win->desknum == globals.desknum)
-      flag = 1;
+    if (IS_STICKY_ACROSS_PAGES(win)) {
+      flag = 0;
+    } else if (win->desknum == globals.desknum) {
+      /* win and screen intersect if they are not disjoint in x and y */
+      flag = !fvwmrect_do_rectangles_intersect(&g, &manager->managed_g);
+    }
+
     break;
 
   case NO_SHOW_PAGE:
