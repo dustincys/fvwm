@@ -164,6 +164,7 @@ Silent Key KP_2		M M MenuMoveCursor +1s
 Silent Key n		M M MenuMoveCursor +1s
 
 Silent Key u		M A MenuMoveCursor +1
+Silent Key y		M A MenuMoveCursor +1
 
 Silent Key Tab		M A MenuMoveCursor +1
 Silent Key Tab		M C MenuMoveCursor +1s
