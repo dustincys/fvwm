@@ -164,7 +164,8 @@ static char *csetopts[] =
 	"IconTint",
 	"NoIconTint",
 	"IconAlpha",
-
+	"Translucent",
+	"NoTranslucent",
 	NULL
 };
 
@@ -626,6 +627,7 @@ void parse_colorset(int n, char *line)
 	char *fg_tint = NULL;
 	char *bg_tint = NULL;
 	char *icon_tint = NULL;
+	char *translucent_tint = NULL;
 	Bool have_pixels_changed = False;
 	Bool has_icon_pixels_changed = False;
 	Bool has_fg_changed = False;
@@ -638,6 +640,7 @@ void parse_colorset(int n, char *line)
 	Bool has_fg_tint_changed = False;
 	Bool has_bg_tint_changed = False;
 	Bool has_icon_tint_changed = False;
+	Bool has_translucent_tint_changed = False;
 	Bool has_pixmap_changed = False;
 	Bool has_shape_changed = False;
 	Bool has_image_alpha_changed = False;
@@ -765,6 +768,10 @@ void parse_colorset(int n, char *line)
 		case 21: /* Plain */
 			has_pixmap_changed = True;
 			free_colorset_background(cs, True);
+			cs->is_translucent = False;
+			cs->translucent_tint_percent = 0;
+			cs->color_flags &= ~TRANSLUCENT_TINT_SUPPLIED;
+			has_translucent_tint_changed = True;
 			break;
 		case 22: /* NoShape */
 			has_shape_changed = True;
@@ -930,6 +937,24 @@ void parse_colorset(int n, char *line)
 				has_icon_pixels_changed = True;
 				cs->icon_alpha_percent = tmp;
 			}
+			break;
+		case 42: /* Translucent */
+			cs->is_translucent = True;
+			parse_simple_tint(
+					cs, args, &translucent_tint,
+					TRANSLUCENT_TINT_SUPPLIED,
+					&has_translucent_tint_changed, &percent,
+					"Translucent");
+			if (has_translucent_tint_changed)
+			{
+				cs->translucent_tint_percent = percent;
+			}
+			break;
+		case 43: /* NoTranslucent */
+			cs->is_translucent = False;
+			cs->translucent_tint_percent = 0;
+			cs->color_flags &= ~TRANSLUCENT_TINT_SUPPLIED;
+			has_translucent_tint_changed = True;
 			break;
 		default:
 			/* test for ?Gradient */
@@ -1632,7 +1657,26 @@ void parse_colorset(int n, char *line)
 			}
 		}
 	}
-
+	/*
+	 * ---------- change the translucent tint colour ----------
+	 */
+	if (has_translucent_tint_changed)
+	{
+		/* user specified colour */
+		if (translucent_tint != NULL)
+		{
+			PictureFreeColors(
+					dpy, Pcmap, &cs->translucent_tint, 1, 0, True);
+			cs->translucent_tint = GetColor(translucent_tint);
+		}
+		else
+		{
+			/* default */
+			PictureFreeColors(
+					dpy, Pcmap, &cs->translucent_tint, 1, 0, True);
+			cs->translucent_tint = GetColor(black);
+		}
+	}
 	/*
 	 * ---------- send new colorset to fvwm and clean up ----------
 	 */
@@ -1729,6 +1773,7 @@ void alloc_colorset(int n)
 			ncs->fgsh = GetColor(white);
 			ncs->tint = GetColor(black);
 			ncs->icon_tint = GetColor(black);
+			ncs->translucent_tint = GetColor(black);
 			ncs->pixmap = XCreatePixmapFromBitmapData(
 				dpy, Scr.NoFocusWin,
 				&g_bits[4 * (nColorsets % 3)], 4, 4,
@@ -1746,6 +1791,7 @@ void alloc_colorset(int n)
 			ncs->fgsh = GetForeShadow(ncs->fg, ncs->bg);
 			ncs->tint = GetColor(black);
 			ncs->icon_tint = GetColor(black);
+			ncs->translucent_tint = GetColor(black);
 		}
 		ncs->fg_tint = ncs->bg_tint = GetColor(black);
 		/* set flags for fg contrast, bg average */
@@ -1757,6 +1803,7 @@ void alloc_colorset(int n)
 		ncs->icon_alpha_percent = 100;
 		ncs->tint_percent = 0;
 		ncs->icon_tint_percent = 0;
+		ncs->translucent_tint_percent = 0;
 		ncs->fg_tint_percent = ncs->bg_tint_percent = 0;
 		ncs->dither = (PictureDitherByDefault())? True:False;
 		nColorsets++;

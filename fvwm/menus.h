@@ -14,6 +14,8 @@
 
 #define IS_MENU_RETURN(x) \
   ((x)==MENU_DONE || (x)==MENU_ABORTED || (x)==MENU_SUBMENU_TORN_OFF)
+#define MR_X(m)                     ((m)->d->x)
+#define MR_Y(m)                     ((m)->d->y)
 
 struct MenuRoot;
 struct MenuStyle;

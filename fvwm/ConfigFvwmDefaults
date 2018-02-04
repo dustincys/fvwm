@@ -144,6 +144,7 @@ Silent Key KP_Down	M A MenuMoveCursor 1
 Silent Key KP_2		M A MenuMoveCursor 1
 #next
 Silent Key n		M A MenuMoveCursor 1
+Silent Key y		M A MenuMoveCursor 1
 
 Silent Key Down		M S MenuMoveCursor 0 -1
 Silent Key KP_Down	M S MenuMoveCursor 0 -1
