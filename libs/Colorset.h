@@ -51,6 +51,10 @@ typedef struct
 	Bool dither;
 	Bool allows_buffered_transparency;
 	Bool is_maybe_root_transparent;
+	/* only use by fvwm menu (non tear-off) */
+	Bool is_translucent;
+	Pixel translucent_tint;
+	unsigned int translucent_tint_percent : 7;
 #endif
 } colorset_t;
 
@@ -78,6 +82,7 @@ typedef struct
 #define FG_TINT_SUPPLIED  0x100
 #define BG_TINT_SUPPLIED  0x200
 #define ICON_TINT_SUPPLIED 0x400
+#define TRANSLUCENT_TINT_SUPPLIED 0x800
 #endif
 
 /* colorsets are stored as an array of structs to permit fast dereferencing */
@@ -152,7 +157,10 @@ extern colorset_t *Colorset;
 #define CSETS_IS_TRANSPARENT_PR_TINT(cset) \
     (cset != NULL && cset->pixmap == ParentRelative && \
      cset->tint_percent > 0)
-
+#define CSET_IS_TRANSLUCENT(cset) \
+    (cset >= 0 && Colorset[cset].is_translucent)
+#define CSETS_IS_TRANSLUCENT(cset) \
+    (cset && cset->is_translucent)
 #ifndef FVWM_COLORSET_PRIVATE
 /* Create n new colorsets, fvwm/colorset.c does its own thing (different size)
  */

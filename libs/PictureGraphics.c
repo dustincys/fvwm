@@ -1361,7 +1361,7 @@ void PGraphicsTintRectangle(
 	}
 }
 
-#if 0 /* humm... maybe useful one day with menus */
+#if 1 /* humm... maybe useful one day with menus */
 Pixmap PGraphicsCreateTranslucent(
 	Display *dpy, Window win, FvwmRenderAttributes *fra, GC gc,
 	int x, int y, int width, int height)
