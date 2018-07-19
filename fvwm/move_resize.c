@@ -10,16 +10,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-/*
- * This module is all original code
- * by Rob Nation
- * Copyright 1993, Robert Nation
- *     You may use this code for any purpose, as long as the original
- *     copyright remains in the source code and all documentation
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>
  */
 
 /*
@@ -4734,6 +4725,7 @@ void CMD_Maximize(F_CMD_ARGS)
 	Bool do_forget = False;
 	Bool is_screen_given = False;
 	Bool ignore_working_area = False;
+	Bool do_fullscreen = False;
 	int layers[2] = { -1, -1 };
 	Bool global_flag_parsed = False;
 	int  scr_x, scr_y;
@@ -4793,6 +4785,11 @@ void CMD_Maximize(F_CMD_ARGS)
 					layers[1] = -1;
 				}
 			}
+			else if (StrEquals(token, "fullscreen"))
+			{
+				do_fullscreen = True;
+				action = taction;
+			}
 			else
 			{
 				global_flag_parsed = True;
@@ -4800,15 +4797,34 @@ void CMD_Maximize(F_CMD_ARGS)
 		}
 	}
 	toggle = ParseToggleArgument(action, &action, -1, 0);
-	if (toggle == 0 && !IS_MAXIMIZED(fw))
-	{
-		return;
-	}
+	if (do_fullscreen) {
+		if (toggle == -1) {
+			/* Flip-flop between fullscreen or not, if no toggle
+			 * argument is given.
+			 */
+			toggle = (IS_EWMH_FULLSCREEN(fw) ? 0 : 1);
+		}
+		if (toggle == 1 && !IS_EWMH_FULLSCREEN(fw)) {
+			EWMH_fullscreen(fw);
+			return;
+		}
 
-	if (toggle == 1 && IS_MAXIMIZED(fw))
-	{
-		/* Fake that the window is not maximized. */
-		do_force_maximize = True;
+		if (toggle == 0 && IS_EWMH_FULLSCREEN(fw)) {
+			unmaximize_fvwm_window(fw);
+			return;
+		}
+		return;
+	} else {
+		if (toggle == 0 && !IS_MAXIMIZED(fw))
+		{
+			return;
+		}
+
+		if (toggle == 1 && IS_MAXIMIZED(fw))
+		{
+			/* Fake that the window is not maximized. */
+			do_force_maximize = True;
+		}
 	}
 
 	/* find the new page and geometry */

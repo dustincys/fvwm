@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>
  */
 
 /*
@@ -28,11 +27,6 @@
  * This module, and the entire ModuleDebugger program, and the concept for
  * interfacing this module to the Window Manager, are all original work
  * by Robert Nation
- *
- * Copyright 1994, Robert Nation. No guarantees or warantees or anything
- * are provided or implied in any way whatsoever. Use this program at your
- * own risk. Permission to use this program for any purpose is given,
- * as long as the copyright is kept intact.
  */
 
 /* ---------------------------- included header files ----------------------- */

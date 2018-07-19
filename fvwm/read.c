@@ -10,18 +10,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>
  */
 
-/*
- * This module is all original code
- * by Rob Nation
- * Copyright 1993, Robert Nation
- *     You may use this code for any purpose, as long as the original
- *     copyright remains in the source code and all documentation
- *
- * Changed 09/24/98 by Dan Espen:
+/* Changed 09/24/98 by Dan Espen:
  * - remove logic that processed and saved module configuration commands.
  * Its now in "modconf.c".
  */
