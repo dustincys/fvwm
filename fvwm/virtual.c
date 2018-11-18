@@ -1257,9 +1257,9 @@ void MoveViewport(int newx, int newy, Bool grab)
 	{
 		prev_page_x = Scr.Vx;
 		prev_page_y = Scr.Vy;
-		prev_desk_and_page_page_x = Scr.Vx;
-		prev_desk_and_page_page_y = Scr.Vy;
-		prev_desk_and_page_desk = Scr.CurrentDesk;
+		/*prev_desk_and_page_page_x = Scr.Vx;*/
+		/*prev_desk_and_page_page_y = Scr.Vy;*/
+		/*prev_desk_and_page_desk = Scr.CurrentDesk;*/
 	}
 	Scr.Vx = newx;
 	Scr.Vy = newy;
