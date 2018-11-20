@@ -87,6 +87,9 @@ static int prev_desk = 0;
 static int prev_desk_and_page_desk = 0;
 static int prev_desk_and_page_page_x = 0;
 static int prev_desk_and_page_page_y = 0;
+static int last_desk_and_page_desk = 0;
+static int last_desk_and_page_page_x = 0;
+static int last_desk_and_page_page_y = 0;
 
 /* ---------------------------- exported variables (globals) --------------- */
 
@@ -1260,6 +1263,9 @@ void MoveViewport(int newx, int newy, Bool grab)
 		/*prev_desk_and_page_page_x = Scr.Vx;*/
 		/*prev_desk_and_page_page_y = Scr.Vy;*/
 		/*prev_desk_and_page_desk = Scr.CurrentDesk;*/
+		last_desk_and_page_page_x = Scr.Vx;
+		last_desk_and_page_page_y = Scr.Vy;
+		last_desk_and_page_desk = Scr.CurrentDesk;
 	}
 	Scr.Vx = newx;
 	Scr.Vy = newy;
@@ -1431,6 +1437,9 @@ void goto_desk(int desk)
 		prev_desk_and_page_desk = Scr.CurrentDesk;
 		prev_desk_and_page_page_x = Scr.Vx;
 		prev_desk_and_page_page_y = Scr.Vy;
+		last_desk_and_page_desk = Scr.CurrentDesk;
+		last_desk_and_page_page_x = Scr.Vx;
+		last_desk_and_page_page_y = Scr.Vy;
 		UnmapDesk(Scr.CurrentDesk, True);
 		Scr.CurrentDesk = desk;
 		MapDesk(desk, True);
@@ -2202,6 +2211,12 @@ void CMD_GotoDeskAndPage(F_CMD_ARGS)
 		val[1] = prev_desk_and_page_page_x;
 		val[2] = prev_desk_and_page_page_y;
 	}
+	else if (MatchToken(action, "last"))
+	{
+		val[0] = last_desk_and_page_desk;
+		val[1] = last_desk_and_page_page_x;
+		val[2] = last_desk_and_page_page_y;
+	}
 	else if (GetIntegerArguments(action, NULL, val, 3) == 3)
 	{
 		val[1] *= Scr.MyDisplayWidth;
@@ -2216,14 +2231,17 @@ void CMD_GotoDeskAndPage(F_CMD_ARGS)
 	if (is_new_desk)
 	{
 		UnmapDesk(Scr.CurrentDesk, True);
+		prev_desk_and_page_page_x = Scr.Vx;
+		prev_desk_and_page_page_y = Scr.Vy;
 	}
-	prev_desk_and_page_page_x = Scr.Vx;
-	prev_desk_and_page_page_y = Scr.Vy;
+	last_desk_and_page_page_x = Scr.Vx;
+	last_desk_and_page_page_y = Scr.Vy;
 	MoveViewport(val[1], val[2], True);
 	if (is_new_desk)
 	{
 		prev_desk = Scr.CurrentDesk;
 		prev_desk_and_page_desk = Scr.CurrentDesk;
+		last_desk_and_page_desk = Scr.CurrentDesk;
 		Scr.CurrentDesk = val[0];
 		MapDesk(val[0], True);
 		focus_grab_buttons_all();
