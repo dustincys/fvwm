@@ -1265,7 +1265,10 @@ void MoveViewport(int newx, int newy, Bool grab)
 		/*prev_desk_and_page_desk = Scr.CurrentDesk;*/
 		last_desk_and_page_page_x = Scr.Vx;
 		last_desk_and_page_page_y = Scr.Vy;
-		last_desk_and_page_desk = Scr.CurrentDesk;
+
+		if(Scr.CurrentDesk < 10){
+			last_desk_and_page_desk = Scr.CurrentDesk;
+		}
 	}
 	Scr.Vx = newx;
 	Scr.Vy = newy;
@@ -1433,11 +1436,13 @@ void goto_desk(int desk)
 	 * command. */
 	if (Scr.CurrentDesk != desk)
 	{
-		prev_desk = Scr.CurrentDesk;
-		prev_desk_and_page_desk = Scr.CurrentDesk;
+		if(Scr.CurrentDesk < 10){
+			prev_desk = Scr.CurrentDesk;
+			prev_desk_and_page_desk = Scr.CurrentDesk;
+			last_desk_and_page_desk = Scr.CurrentDesk;
+		}
 		prev_desk_and_page_page_x = Scr.Vx;
 		prev_desk_and_page_page_y = Scr.Vy;
-		last_desk_and_page_desk = Scr.CurrentDesk;
 		last_desk_and_page_page_x = Scr.Vx;
 		last_desk_and_page_page_y = Scr.Vy;
 		UnmapDesk(Scr.CurrentDesk, True);
@@ -2239,9 +2244,11 @@ void CMD_GotoDeskAndPage(F_CMD_ARGS)
 	MoveViewport(val[1], val[2], True);
 	if (is_new_desk)
 	{
-		prev_desk = Scr.CurrentDesk;
-		prev_desk_and_page_desk = Scr.CurrentDesk;
-		last_desk_and_page_desk = Scr.CurrentDesk;
+		if(Scr.CurrentDesk < 10){
+			prev_desk = Scr.CurrentDesk;
+			prev_desk_and_page_desk = Scr.CurrentDesk;
+			last_desk_and_page_desk = Scr.CurrentDesk;
+		}
 		Scr.CurrentDesk = val[0];
 		MapDesk(val[0], True);
 		focus_grab_buttons_all();
