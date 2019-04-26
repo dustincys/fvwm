@@ -1578,10 +1578,22 @@ void ChangeIconPixmap(FvwmWindow *fw)
 			{
 				if (FW_W_ICON_TITLE(fw))
 				{
+          double alpha = 0.4;
+          unsigned long opacity = (unsigned long)(0xFFFFFFFFul * alpha);
+          Atom XA_NET_WM_WINDOW_OPACITY = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
+          XChangeProperty(dpy, FW_W_ICON_TITLE(fw), XA_NET_WM_WINDOW_OPACITY, XA_CARDINAL, 32,
+                          PropModeReplace, (unsigned char *)&opacity, 1L);
+
 					XMapWindow(dpy, FW_W_ICON_TITLE(fw));
 				}
 				if (FW_W_ICON_PIXMAP(fw) != None)
 				{
+          double alpha = 0.4;
+          unsigned long opacity = (unsigned long)(0xFFFFFFFFul * alpha);
+          Atom XA_NET_WM_WINDOW_OPACITY = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
+          XChangeProperty(dpy, FW_W_ICON_PIXMAP(fw), XA_NET_WM_WINDOW_OPACITY, XA_CARDINAL, 32,
+                          PropModeReplace, (unsigned char *)&opacity, 1L);
+
 					XMapWindow(dpy, FW_W_ICON_PIXMAP(fw));
 				}
 			}
@@ -2627,10 +2639,24 @@ void Iconify(FvwmWindow *fw, initial_window_options_t *win_opts)
 	{
 		if (FW_W_ICON_TITLE(fw) != None)
 		{
+
+      double alpha = 0.4;
+      unsigned long opacity = (unsigned long)(0xFFFFFFFFul * alpha);
+      Atom XA_NET_WM_WINDOW_OPACITY = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
+      XChangeProperty(dpy, FW_W_ICON_TITLE(fw), XA_NET_WM_WINDOW_OPACITY, XA_CARDINAL, 32,
+                      PropModeReplace, (unsigned char *)&opacity, 1L);
+
 			XMapWindow(dpy, FW_W_ICON_TITLE(fw));
 		}
 		if (FW_W_ICON_PIXMAP(fw) != None)
 		{
+
+      double alpha = 0.4;
+      unsigned long opacity = (unsigned long)(0xFFFFFFFFul * alpha);
+      Atom XA_NET_WM_WINDOW_OPACITY = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
+      XChangeProperty(dpy, FW_W_ICON_PIXMAP(fw), XA_NET_WM_WINDOW_OPACITY, XA_CARDINAL, 32,
+                      PropModeReplace, (unsigned char *)&opacity, 1L);
+
 			XMapWindow(dpy, FW_W_ICON_PIXMAP(fw));
 		}
 	}

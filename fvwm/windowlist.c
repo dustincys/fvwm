@@ -68,7 +68,7 @@
 #define NO_LAYER		(1<<19)
 #define SHOW_SCREEN		(1<<20)
 #define SHOW_DEFAULT (SHOW_GEOMETRY | SHOW_ALLDESKS | SHOW_NORMAL | \
-	SHOW_ICONIC | SHOW_STICKY_ACROSS_PAGES | SHOW_STICKY_ACROSS_DESKS)
+	SHOW_ICONIC | SHOW_STICKY_ACROSS_PAGES | SHOW_STICKY_ACROSS_DESKS | NO_DESK_SORT)
 
 static char *get_desk_title(int desk, unsigned long flags, Bool is_top_title)
 {
